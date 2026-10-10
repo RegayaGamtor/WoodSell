@@ -1,0 +1,38 @@
+name: Build WoodSeller
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:   # bisa dijalankan manual dari tab Actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build dengan Maven
+        run: mvn -B clean package
+
+      - name: Verifikasi isi jar
+        run: |
+          jar tf target/WoodSeller-1.0.0.jar | tee /tmp/jar-list.txt
+          grep -q "^plugin.yml$" /tmp/jar-list.txt
+          grep -q "^config.yml$" /tmp/jar-list.txt
+          grep -q "^id/regaya/woodseller/WoodSeller.class$" /tmp/jar-list.txt
+
+      - name: Upload jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: WoodSeller-1.0.0
+          path: target/WoodSeller-1.0.0.jar
+          if-no-files-found: error
