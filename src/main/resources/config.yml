@@ -1,0 +1,121 @@
+# ============================================================
+#  WoodSeller - NPC Citizens penjual Papan Kayu (Oraxen)
+#  Semua teks memakai format MiniMessage (<green>, <bold>, dll).
+#
+#  Placeholder:
+#    <player>  nama pemain        <npc>    nama NPC (npc-name)
+#    <stock>   jumlah papan di inventory pemain
+#    <price>   harga per papan    <amount> jumlah (sesuai konteks)
+#    <total>   total harga (sesuai konteks)
+#    <step>    nilai tombol tambah/kurang
+# ============================================================
+
+# ID item Oraxen yang dibeli NPC (nama section di items/*.yml Oraxen)
+oraxen-item-id: papan_kayu
+
+# Harga per 1 item (format uang mengikuti plugin ekonomi lewat Vault)
+price-per-item: 50.0
+
+# Nama NPC yang tampil di dialog dan GUI
+npc-name: "Pak Tukang Kayu"
+
+# ID NPC Citizens yang berfungsi sebagai penjual.
+# Tambah lewat: /woodseller npc add <id>   (cek id dengan /npc select lalu /npc id)
+npc-ids: []
+
+session:
+  # Berapa lama sesi tetap berlaku tanpa aktivitas
+  timeout-seconds: 120
+  # Pemain harus berada dalam jarak ini dari NPC (blok)
+  max-distance: 6.0
+
+# Dialog NPC (teks biasa di chat). Setelah baris terakhir, GUI jual otomatis terbuka.
+dialogue:
+  line-delay-ticks: 30
+  lines:
+    - "<dark_gray>[<gold><npc></gold>]</dark_gray> <white>Halo, <yellow><player></yellow>! Selamat datang di tempat pengepulan kayu."
+    - "<dark_gray>[<gold><npc></gold>]</dark_gray> <white>Aku beli papan kayu hasil kerjamu, harganya <green><price></green> per papan."
+    - "<dark_gray>[<gold><npc></gold>]</dark_gray> <white>Silakan pilih jumlah yang mau dijual."
+
+gui:
+  title: "<dark_green>Pengepul Kayu"
+
+  # Tombol tambah/kurang jumlah (maksimal 3 nilai, urutkan kecil ke besar)
+  adjust-steps: [1, 8, 64]
+
+  # Material tiap tombol (nama material Minecraft)
+  materials:
+    filler: BLACK_STAINED_GLASS_PANE
+    info: OAK_SIGN
+    decrease: RED_CONCRETE
+    increase: LIME_CONCRETE
+    sell-selected: EMERALD
+    sell-all: GOLD_INGOT
+    close: BARRIER
+    empty: BARRIER
+
+  info:
+    name: "<gold><bold><npc>"
+    lore:
+      - "<gray>Harga beli: <green><price></green> / papan"
+      - "<gray>Papan kayumu: <yellow><stock></yellow>"
+  selected:
+    name: "<yellow>Jumlah dijual: <white><amount>"
+    lore:
+      - "<gray>Total: <green><total>"
+      - ""
+      - "<dark_gray>Atur jumlah dengan tombol -/+"
+  empty:
+    name: "<red>Kamu belum punya papan kayu"
+    lore:
+      - "<gray>Kembali lagi kalau sudah punya, ya!"
+  decrease:
+    name: "<red>Kurangi <step>"
+    lore:
+      - "<gray>Klik untuk mengurangi jumlah"
+  increase:
+    name: "<green>Tambah <step>"
+    lore:
+      - "<gray>Klik untuk menambah jumlah"
+  sell-selected:
+    name: "<green><bold>JUAL <amount> PAPAN"
+    lore:
+      - "<gray>Dapat: <green><total>"
+      - ""
+      - "<yellow>Klik untuk menjual"
+  sell-all:
+    name: "<gold><bold>JUAL SEMUA"
+    lore:
+      - "<gray>Jual semua <yellow><stock></yellow> papan kayumu"
+      - "<gray>Dapat: <green><total>"
+      - ""
+      - "<yellow>Klik untuk menjual"
+  close:
+    name: "<red>Tutup"
+    lore:
+      - "<gray>Akhiri percakapan"
+
+messages:
+  sold: "<dark_gray>[<gold><npc></gold>]</dark_gray> <white>Terima kasih! <yellow><amount></yellow> papan kayu terjual seharga <green><total></green>."
+  not-enough: "<dark_gray>[<gold><npc></gold>]</dark_gray> <red>Papan kayumu cuma <yellow><stock></yellow>, tidak cukup untuk menjual <yellow><amount></yellow>."
+  session-expired: "<red>Percakapan sudah berakhir. Klik kanan NPC lagi untuk mulai berdagang."
+  closed: "<dark_gray>[<gold><npc></gold>]</dark_gray> <white>Sampai jumpa lagi, <yellow><player></yellow>!"
+  inventory-error: "<red>Terjadi masalah saat mengambil item. Coba lagi."
+  economy-error: "<red>Sistem ekonomi belum tersedia. Hubungi admin."
+
+# Suara (nama sound Minecraft); kosongkan "" untuk mematikan
+sounds:
+  sell: "entity.experience_orb.pickup"
+  error: "entity.villager.no"
+  click: "ui.button.click"
+
+admin-messages:
+  reloaded: "<green>Config WoodSeller dimuat ulang."
+  npc-added: "<green>NPC <yellow><id></yellow> sekarang menjadi penjual papan."
+  npc-exists: "<red>NPC <yellow><id></yellow> sudah terdaftar."
+  npc-removed: "<green>NPC <yellow><id></yellow> dihapus dari daftar penjual."
+  npc-missing: "<red>NPC <yellow><id></yellow> tidak ada di daftar."
+  npc-unknown: "<red>NPC Citizens dengan id <yellow><id></yellow> tidak ditemukan."
+  npc-list: "<gray>NPC penjual: <yellow><list></yellow>"
+  usage: "<gray>Pemakaian: /woodseller npc <add|remove|list> [id] | /woodseller reload"
+  no-permission: "<red>Kamu tidak punya izin."

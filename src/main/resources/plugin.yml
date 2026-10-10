@@ -1,0 +1,19 @@
+name: WoodSeller
+version: 1.0.0
+main: id.regaya.woodseller.WoodSeller
+api-version: '1.21'
+description: NPC Citizens penjual papan kayu (Oraxen) dengan dialog dan GUI jual.
+depend: [Citizens, Oraxen, Vault]
+
+commands:
+  woodseller:
+    description: Perintah admin WoodSeller (atur NPC, reload).
+    usage: /woodseller <npc|reload>
+
+permissions:
+  woodseller.use:
+    description: Boleh berdagang dengan NPC penjual papan.
+    default: true
+  woodseller.admin:
+    description: Atur NPC penjual dan reload config.
+    default: op
